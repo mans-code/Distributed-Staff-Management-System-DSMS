@@ -1,6 +1,6 @@
-## Requirements
+### Requirements
  
- #  Use ClinicManagement implementation with server replication system
+##  Use ClinicManagement implementation with server replication system
   * server process replication
   * reliable group communication
   * failure detection
@@ -10,17 +10,17 @@
 * One leader and two backups
 * Database synchronization for each request
 
-## Reliable communication
+# Reliable communication
 * FIFO broadcast using UDP
 * Lost messages recovery
 	
-## Failure detection
+#  Failure detection
 * Subsystem in which processes check each other.
 * Remove failed process from group.
 * If leader fails, elect new leader.
 * Use bully algorithm to elect a new leader.
 
-## Leader process receives client instructions and replicate them
+# Leader process receives client instructions and replicate them
 * Receive response from replicas
 * Single response to the client
 * Make broadcast reliable
