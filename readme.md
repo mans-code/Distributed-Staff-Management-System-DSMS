@@ -38,10 +38,10 @@ Selected replica that communicates with frontend and synchronizes backup replica
 * Receive messages from FrontEnd, client request.
 
 * Execute the messages in order, using the sequence inside the message. 
-In case of lost messages, Replica manager send “message lost request” to FrontEnd. The message must have a sequence number of the missing message. Finally wait for the missing message before handling any more messages .   
+  * In case of lost messages, Replica manager send “message lost request” to FrontEnd. The message must have a sequence number of the missing message. Finally wait for the missing message before handling any more messages .   
 
-* Send a message that has the new system status to the backups using UDP (with each message Replicate manager attach the     	sequence number received from FrontEnd for FIFO broadcast)
-  ** For Example, when the  Replica manager receive create doctor request it creates the new doctor record and build a message that has the doctor record and sequence number received by the FrontEnd, and send this message to replicate backups. 
+* Send a message that has the new system status to the backups using UDP (with each message Replicate manager attach the     	sequence number received from FrontEnd for FIFO broadcast).
+  * For Example, when the  Replica manager receive create doctor request it creates the new doctor record and build a message that has the doctor record and sequence number received by the FrontEnd, and send this message to replicate backups. 
 * Wait for replicate backups to return a result.
 * Return a result to FrontEnd.
  
