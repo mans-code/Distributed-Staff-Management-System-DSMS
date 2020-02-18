@@ -50,3 +50,6 @@ Selected replica that communicates with frontend and synchronizes backup replica
 * Verifies ordering based on FIFO broadcast (First update execute before the second).
 * Applies changes to local database
 * Return a result to replicate the manager.
+
+
+
