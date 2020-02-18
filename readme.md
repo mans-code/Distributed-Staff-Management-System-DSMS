@@ -1,6 +1,6 @@
-### Requirements
+## Requirements
  
-*##  Use ClinicManagement implementation with server replication system
+# Use ClinicManagement implementation with server replication system
   * server process replication
   * reliable group communication
   * failure detection
@@ -28,66 +28,25 @@
   * Timeouts
 
 
-#Distributed Staff Management System (DSMS) using Java RMI
+## Implementation 
+# Client:
+* Create and send request to the front end system using CORBA e.g create Doctor or Nurse Record.
+# Front End:
+	* Receive client request, wrap the request and sequence number  in a message object, and send the message to replicate manager to handle the request using UDP. Then wait for the replicate manager to return a result. Finally, return the result to the client.
+Replica manager:
+Selected replica that communicates with frontend and synchronizes backup replicas.
+Receive messages from FrontEnd, client request.
 
-* 3 clinics
-* 3 servers (ClinicServer)
-  * servers will maintain records
-  * 2 types of records: Nurse and Doctors
-  * records have unique IDs ex
-    * DR10000 NR29299 (NR/DR [0-9]5*)
+Execute the messages in order, using the sequence inside the message. 
+In case of lost messages, Replica manager send “message lost request” to FrontEnd. The message must have a sequence number of the missing message. Finally wait for the missing message before handling any more messages .   
 
-## DoctorRecord contains the following fields:
-* First name
-* Last name
-* Address
-* Phone
-* Specialization (e.g. surgeon, orthopaedic, etc)
-* Location (mtl, lvl, ddo)
-
-## A NurseRecord contains the following fields:
-• First name
-• Last name
-• Designation (junior/senior)
-• Status (active/terminated)
-• Status Date (active or terminated date)
-
-* every record will be stored in a list with the same first letter of last name
-* a hashmap will keep all letters
-* nurses and doctors in the same list
-* Each server maintains a log of all operations in text file ( what, who, when )
-
-## Users 
-* ManagerClient
-* managerID (MTL/DDO/LVL[0-9]*4)
-* system will identify manager by it's id and direct the actions to managers server
-* ManagerClient keep a log of the actions they performed
-
-## System
-* createDRecord (firstName, lastName, address, phone, specialization, location)
-  * server returns if success
-* createNRecord (firstName, lastName, designation, status, statusDate)
-  * same
-* getRecordCounts (recordType)
-  * using UDP/IP gets the number of records from each clinic
-* editRecord (recordID, fieldName, newValue)
-  * edits based on id and returns success/fail message. 
-  * The fields that should be allowed to change are address, phone and location (for DoctorRecord), and designation, status and status date (for NurseRecord).
-
-#Implementation
-You should design the ClinicServer maximizing concurrency. In other words, use proper
-synchronization that allows multiple clinic manager to perform operations for the same or
-different records at the same time.
-http://stackoverflow.com/questions/19541582/storing-and-retrieving-arraylist-values-from-hashmap
-
-#Test Cases
-
-* Test - creating, editing and counting records
-  * Case 1: 
-  * Case 2: 
-* Test - FIFO
-  * Case 1: 
-  * Case 2:
-* Test - server leader election
-  * Case 1:
-  * Case 2:
+Send a message that has the new system status to the backups using UDP (with each message Replicate manager attach the sequence number received from FrontEnd for FIFO broadcast)
+For Example, when the  Replica manager receive create doctor request it creates the new doctor record and build a message that has the doctor record and sequence number received by the FrontEnd, and send this message to replicate backups. 
+Wait for replicate backups to return a result.
+Return a result to FrontEnd.
+ 
+Replica backups:
+Receive updates from Replica manager.
+Verifies ordering based on FIFO broadcast (First update execute before the second).
+Applies changes to local database
+Return a result to replicate the manager.
