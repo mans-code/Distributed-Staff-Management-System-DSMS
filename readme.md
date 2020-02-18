@@ -1,6 +1,6 @@
-###  Requirements
+##  Requirements
  
-##  Use ClinicManagement implementation with server replication system
+#  Use ClinicManagement implementation with server replication system
 * server process replication
 * reliable group communication
 * failure detection
