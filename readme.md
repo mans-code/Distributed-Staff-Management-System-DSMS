@@ -1,4 +1,4 @@
-### Requirements
+## Requirements
  
  #  Use ClinicManagement implementation with server replication system
   * server process replication
@@ -6,7 +6,7 @@
   * failure detection
   * leader election
 
-## Server process replication
+# Server process replication
 * One leader and two backups
 * Database synchronization for each request
 
