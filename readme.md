@@ -1,3 +1,33 @@
+###  Requirements
+ 
+##  Use ClinicManagement implementation with server replication system
+* server process replication
+* reliable group communication
+* failure detection
+* leader election
+
+## Server process replication
+* One leader and two backups
+* Database synchronization for each request
+
+## Reliable communication
+* FIFO broadcast using UDP
+* Lost messages recovery
+	
+## Failure detection
+* Subsystem in which processes check each other.
+* Remove failed process from group.
+* If leader fails, elect new leader.
+* Use bully algorithm to elect a new leader.
+
+## Leader process receives client instructions and replicate them
+* Receive response from replicas
+* Single response to the client
+* Make broadcast reliable
+  * Sequentialization
+  * Timeouts
+
+
 #Distributed Staff Management System (DSMS) using Java RMI
 
 * 3 clinics
